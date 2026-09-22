@@ -1,6 +1,6 @@
 from src.models import COLUMNS, Statistics
 
-CELL_SEPARATOR = "\t|\t"
+CELL_SEPARATOR = " | "
 PERCENTILE_ROW_SEPARATOR = "\t\t|\t"
 
 
@@ -12,9 +12,10 @@ def show_regions_list(regions: set[str]) -> None:
 
 def show_region_stats_table(header: list[str], region_stats_table: list[list[str]]) -> None:
     print("\nТаблица всех данных этого региона:\n")
-    print(CELL_SEPARATOR.join(header))
-    for row in region_stats_table:
-        print(CELL_SEPARATOR.join(row))
+    table = [header, *region_stats_table]
+    widths = [max(len(row[i]) for row in table) for i in range(len(header))]
+    for row in table:
+        print(CELL_SEPARATOR.join(v.ljust(w) for v, w in zip(row, widths)))
 
 
 def show_metrics() -> None:

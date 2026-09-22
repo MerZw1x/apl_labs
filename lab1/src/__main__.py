@@ -12,25 +12,24 @@ def main() -> int:
         run()
     except (KeyboardInterrupt, EOFError):
         print("\nВыход")
-        return 0
-    except DemographyError as e:
-        print(f"Ошибка: {e}")
-        return 1
-    except UnicodeDecodeError:
-        print("Это не текстовый файл")
-        return 1
-    except csv.Error as e:
-        print(f"Файл не удалось разобрать как CSV: {e}")
-        return 1
-    except OSError as e:
-        print(f"Не удалось открыть файл: {e.strerror}")
-        return 1
     return 0
 
-
+def load_data() -> list[list[str]]:
+    while True:
+        path = r.read_path()
+        try:
+            return r.read_file(path)
+        except DemographyError as e:
+            print(f"Ошибка: {e}")
+        except UnicodeDecodeError:
+            print("Это не текстовый файл")
+        except csv.Error as e:
+            print(f"Файл не удалось разобрать как CSV: {e}")
+        except OSError as e:
+            print(f"Не удалось открыть файл: {e.strerror}")       
+        
 def run() -> None:
-    path = r.read_path()
-    data = r.read_file(path)
+    data = load_data()
     regions = s.create_unique_region_set(data)
     header = s.get_header(data)
 

@@ -61,7 +61,7 @@ def analyze(data: list[list[str]], regions: set[str], header: list[str]) -> bool
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
 
 # data/russian_demography.csv 
 # data/big.csv               

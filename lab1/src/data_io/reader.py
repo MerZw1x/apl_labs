@@ -2,22 +2,37 @@ import csv
 import os
 
 from src.errors import FileFormatError
-from src.models import COLUMNS, EXPECTED_HEADER, HEADER_ROW_INDEX
+from src.models import (
+    COLUMNS,
+    CSV_DELIMITER,
+    CSV_EXTENSION,
+    EXPECTED_HEADER,
+    FILE_REQUIREMENTS,
+    HEADER_ROW_INDEX,
+)
 
 MAX_FILE_SIZE_BYTES = 10*1024*1024
 
 def read_path() -> str:
-    while True:
+    path = ""
+    flag = True
+
+    while flag:
         path = input(
             "Привет, чтобы узнать метрики, отправь сюда путь до файла:\n"
         ).strip()
         if not path:
             print("Путь не может быть пустым")
             continue
-        return path
+        flag = False
+
+    return path
 
 
 def read_file(path: str) -> list[list[str]]:
+    if not path.lower().endswith(CSV_EXTENSION):
+        raise FileFormatError(FILE_REQUIREMENTS)
+
     size = os.path.getsize(path)
     if size > MAX_FILE_SIZE_BYTES:
         max_size_mb = MAX_FILE_SIZE_BYTES /1024/1024
@@ -30,10 +45,11 @@ def read_file(path: str) -> list[list[str]]:
         raise FileFormatError("Файл пустой")
 
     header = data[HEADER_ROW_INDEX]
+    if len(header) == 1 and CSV_DELIMITER not in header[HEADER_ROW_INDEX]:
+        raise FileFormatError(f"Неверный разделитель. {FILE_REQUIREMENTS}")
+
     if header != EXPECTED_HEADER:
-        raise FileFormatError(
-            f"Неожиданные колонки: {header} Ожидались - {EXPECTED_HEADER}"
-        )
+        raise FileFormatError(FILE_REQUIREMENTS)
 
     for row in data[HEADER_ROW_INDEX + 1 :]:
         if len(row) != len(EXPECTED_HEADER):
@@ -43,7 +59,10 @@ def read_file(path: str) -> list[list[str]]:
 
 
 def get_region_name(regions: set[str]) -> str:
-    while True:
+    index = 0
+    flag = True
+
+    while flag:
         raw = input("Введи номер региона: ").strip()
         try:
             index = int(raw)
@@ -53,11 +72,16 @@ def get_region_name(regions: set[str]) -> str:
         if not 1 <= index <= len(regions):
             print(f"Номер должен быть от 1 до {len(regions)}")
             continue
-        return sorted(regions)[index - 1]
+        flag = False
+
+    return sorted(regions)[index - 1]
 
 
 def get_stat_number() -> int:
-    while True:
+    number = 0
+    flag = True
+
+    while flag:
         raw = input("По какому критерию хочешь посчитать метрики: ").strip()
         try:
             number = int(raw)
@@ -67,13 +91,20 @@ def get_stat_number() -> int:
         if not 1 <= number <= len(COLUMNS):
             print(f"Номер метрики должен быть от 1 до {len(COLUMNS)}")
             continue
-        return number
+        flag = False
+
+    return number
 
 
 def repeat() -> bool:
-    while True:
+    raw = ""
+    flag = True
+
+    while flag:
         raw = input("\nПродолжаем?[y/n]: ").strip().lower()
         if raw not in ("y", "n"):
             print("Выбери только между y и n")
             continue
-        return raw == "y"
+        flag = False
+
+    return raw == "y"

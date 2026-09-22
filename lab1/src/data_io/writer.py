@@ -1,4 +1,4 @@
-from src.models import COLUMNS
+from src.models import COLUMNS, Statistics
 
 CELL_SEPARATOR = "\t|\t"
 PERCENTILE_ROW_SEPARATOR = "\t\t|\t"
@@ -23,18 +23,12 @@ def show_metrics() -> None:
         print(f"{i} - {column.title}")
 
 
-def show_results(
-    min_: float,
-    max_: float,
-    mean: float,
-    median: float,
-    percentiles: dict[int, float],
-) -> None:
+def show_results(statistics: Statistics, percentiles: dict[int, float]) -> None:
     print(f"""
-Минимум - {min_:.2f}
-Максимум - {max_:.2f}
-Среднее значение - {mean:.2f}
-Медиана - {median:.2f}""")
+Минимум - {statistics.minimum:.2f}
+Максимум - {statistics.maximum:.2f}
+Среднее значение - {statistics.mean:.2f}
+Медиана - {statistics.median:.2f}""")
 
     print("\nТаблица перцентилей:\n")
     print(f"перцентиль{CELL_SEPARATOR}значение")

@@ -1,5 +1,3 @@
-from statistics import mean, median
-
 from src.errors import FileFormatError, NoDataError
 from src.models import COLUMNS, HEADER_ROW_INDEX, REGION_INDEX_IN_ROW, Column
 
@@ -46,22 +44,6 @@ def get_necessary_region_stats(region_stats_table: list[list[str]], column: Colu
             raise FileFormatError(f"Некорректная строка данных: {row}") from e
 
     return stats
-
-
-def calculate_min(stats: list[float]) -> float:
-    return min(stats)
-
-
-def calculate_max(stats: list[float]) -> float:
-    return max(stats)
-
-
-def calculate_mean(stats: list[float]) -> float:
-    return mean(stats)
-
-
-def calculate_median(stats: list[float]) -> float:
-    return median(stats)
 
 
 def calculate_percentiles(stats: list[float]) -> dict[int, float]:

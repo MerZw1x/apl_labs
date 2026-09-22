@@ -5,6 +5,7 @@ import src.analytics.stats as s
 import src.data_io.reader as r
 import src.data_io.writer as w
 from src.errors import DemographyError
+from src.models import FILE_REQUIREMENTS, Statistics
 
 
 def main() -> int:
@@ -15,18 +16,24 @@ def main() -> int:
     return 0
 
 def load_data() -> list[list[str]]:
-    while True:
+    data: list[list[str]] = []
+    flag = True
+
+    while flag:
         path = r.read_path()
         try:
-            return r.read_file(path)
+            data = r.read_file(path)
+            flag = False
         except DemographyError as e:
             print(f"Ошибка: {e}")
         except UnicodeDecodeError:
-            print("Это не текстовый файл")
-        except csv.Error as e:
-            print(f"Файл не удалось разобрать как CSV: {e}")
-        except OSError as e:
-            print(f"Не удалось открыть файл: {e.strerror}")       
+            print(f"Ошибка: файл не в кодировке utf-8. {FILE_REQUIREMENTS}")
+        except csv.Error:
+            print(f"Ошибка: файл не удалось разобрать. {FILE_REQUIREMENTS}")
+        except OSError:
+            print("Ошибка: не удалось открыть файл, проверь путь")
+
+    return data
         
 def run() -> None:
     data = load_data()
@@ -49,13 +56,7 @@ def analyze(data: list[list[str]], regions: set[str], header: list[str]) -> bool
     w.show_metrics()
     column = s.select_column(r.get_stat_number())
     stats = s.get_necessary_region_stats(region_stats_table, column)
-    w.show_results(
-        s.calculate_min(stats),
-        s.calculate_max(stats),
-        s.calculate_mean(stats),
-        s.calculate_median(stats),
-        s.calculate_percentiles(stats),
-    )
+    w.show_results(Statistics(stats), s.calculate_percentiles(stats))
     return r.repeat()
 
 

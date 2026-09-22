@@ -1,8 +1,10 @@
 import csv
+import os
 
 from src.errors import FileFormatError
 from src.models import COLUMNS, EXPECTED_HEADER, HEADER_ROW_INDEX
 
+MAX_FILE_SIZE_BYTES = 10*1024*1024
 
 def read_path() -> str:
     while True:
@@ -16,6 +18,11 @@ def read_path() -> str:
 
 
 def read_file(path: str) -> list[list[str]]:
+    size = os.path.getsize(path)
+    if size > MAX_FILE_SIZE_BYTES:
+        max_size_mb = MAX_FILE_SIZE_BYTES /1024/1024
+        raise FileFormatError(f"Слишком большой размер файла. Максимум - {max_size_mb}Mb")
+
     with open(path, "r", encoding="utf-8", newline="") as f:
         data = list(csv.reader(f))
 

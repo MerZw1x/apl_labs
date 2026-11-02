@@ -3,3 +3,28 @@ __pycache__/
 lab1/data/big.csv
 .vscode
 lab4/data/players.csv
+
+# .NET build output
+[Bb]in/
+[Oo]bj/
+
+# Test and coverage output
+TestResults/
+coverage/
+*.trx
+*.coverage
+*.coveragexml
+coverage.cobertura.xml
+coverage.opencover.xml
+
+# Local IDE settings
+.vs/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+
+# Python environments and caches
+.venv/
+.pytest_cache/
+.ruff_cache/

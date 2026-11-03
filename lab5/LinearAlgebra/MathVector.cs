@@ -15,11 +15,11 @@ public class MathVector : IMathVector
         }
     }
 
-    public MathVector(IEnumerable coords)
+    public MathVector(IEnumerable<double> coords)
     {
         ArgumentNullException.ThrowIfNull(coords);
 
-        _coordinates = coords.Cast<double>().ToArray();
+        _coordinates = coords.ToArray();
     }
 
     public double this[int i] 
@@ -41,9 +41,14 @@ public class MathVector : IMathVector
         }
     }
 
-    public IEnumerator GetEnumerator()
+    public IEnumerator<double> GetEnumerator()
     {
-        return _coordinates.GetEnumerator();
+        return ((IEnumerable<double>)_coordinates).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 
     public IMathVector SumNumber(double number)

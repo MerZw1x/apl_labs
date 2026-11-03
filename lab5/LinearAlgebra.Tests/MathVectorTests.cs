@@ -19,7 +19,7 @@ public class MathVectorTests
         List<double> source = new List<double> { 3, 4 };
         IMathVector vector = new MathVector(source);
         source[0] = 100;
-        Assert.Equal(new double[] { 3, 4 }, vector.Cast<double>());
+        Assert.Equal(new double[] { 3, 4 }, vector);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class MathVectorTests
         MathVector source = new MathVector(new double[] { 3,4 });
         IMathVector copy = new MathVector(source);
         source[0] = 100;
-        Assert.Equal(new double[] { 3, 4 }, copy.Cast<double>());
+        Assert.Equal(new double[] { 3, 4 }, copy);
         copy[1] = 200;
         Assert.Equal(4.0, source[1]);
     }
@@ -37,12 +37,6 @@ public class MathVectorTests
     public void Constructor_Null_Throws()
     {
         Assert.Throws<ArgumentNullException>(() => new MathVector(null!));
-    }
-
-    [Fact]
-    public void Constructor_NonDoubleElements_Throws()
-    {
-        Assert.Throws<InvalidCastException>(() => new MathVector(new int[] { 1, 2 }));
     }
 
     [Theory]
@@ -138,7 +132,7 @@ public class MathVectorTests
     {
         MathVector vector = new MathVector(new double[] { 3,-4 });
         IMathVector result = vector.SumNumber(number);
-        Assert.Equal(new double[] { x, y }, result.Cast<double>());
+        Assert.Equal(new double[] { x, y }, result);
     }
 
     [Fact]
@@ -147,7 +141,7 @@ public class MathVectorTests
         MathVector vector = new MathVector(new double[] { 3,4 });
         IMathVector result = vector.SumNumber(2);
         Assert.NotSame(vector, result);
-        Assert.Equal(new double[] { 3,4 }, vector.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, vector);
         result[0] = 100;
         Assert.Equal(3.0, vector[0]);
     }
@@ -161,7 +155,7 @@ public class MathVectorTests
     {
         MathVector vector = new MathVector(new double[] { 3,-4 });
         IMathVector result = vector.MultiplyNumber(number);
-        Assert.Equal(new double[] { x, y }, result.Cast<double>());
+        Assert.Equal(new double[] { x, y }, result);
     }
 
     [Fact]
@@ -170,7 +164,7 @@ public class MathVectorTests
         MathVector vector = new MathVector(new double[] { 3,4 });
         IMathVector result = vector.MultiplyNumber(2);
         Assert.NotSame(vector, result);
-        Assert.Equal(new double[] { 3,4 }, vector.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, vector);
         result[0] = 100;
         Assert.Equal(3.0, vector[0]);
     }
@@ -183,7 +177,7 @@ public class MathVectorTests
     {
         MathVector vector = new MathVector(new double[] { 3,-4 });
         IMathVector result = vector.DivideNumber(number);
-        Assert.Equal(new double[] { x, y }, result.Cast<double>());
+        Assert.Equal(new double[] { x, y }, result);
     }
 
     [Fact]
@@ -192,7 +186,7 @@ public class MathVectorTests
         MathVector vector = new MathVector(new double[] { 3,4 });
         IMathVector result = vector.DivideNumber(2);
         Assert.NotSame(vector, result);
-        Assert.Equal(new double[] { 3,4 }, vector.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, vector);
         result[0] = 100;
         Assert.Equal(3.0, vector[0]);
     }
@@ -211,11 +205,11 @@ public class MathVectorTests
         MathVector left = new MathVector(new double[] { 3,4 });
         MathVector right = new MathVector(new double[] { 1,2 });
         IMathVector result = left.Sum(right);
-        Assert.Equal(new double[] { 4,6 }, result.Cast<double>());
+        Assert.Equal(new double[] { 4,6 }, result);
         Assert.NotSame(left, result);
         Assert.NotSame(right, result);
-        Assert.Equal(new double[] { 3,4 }, left.Cast<double>());
-        Assert.Equal(new double[] { 1,2 }, right.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, left);
+        Assert.Equal(new double[] { 1,2 }, right);
         result[0] = 100;
         Assert.Equal(3.0, left[0]);
         Assert.Equal(1.0, right[0]);
@@ -227,11 +221,11 @@ public class MathVectorTests
         MathVector left = new MathVector(new double[] { 3,4 });
         MathVector right = new MathVector(new double[] { 1,2 });
         IMathVector result = left.Multiply(right);
-        Assert.Equal(new double[] { 3,8 }, result.Cast<double>());
+        Assert.Equal(new double[] { 3,8 }, result);
         Assert.NotSame(left, result);
         Assert.NotSame(right, result);
-        Assert.Equal(new double[] { 3,4 }, left.Cast<double>());
-        Assert.Equal(new double[] { 1,2 }, right.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, left);
+        Assert.Equal(new double[] { 1,2 }, right);
         result[0] = 100;
         Assert.Equal(3.0, left[0]);
         Assert.Equal(1.0, right[0]);
@@ -243,11 +237,11 @@ public class MathVectorTests
         MathVector left = new MathVector(new double[] { 3,4 });
         MathVector right = new MathVector(new double[] { 1,2 });
         IMathVector result = left.Divide(right);
-        Assert.Equal(new double[] { 3,2 }, result.Cast<double>());
+        Assert.Equal(new double[] { 3,2 }, result);
         Assert.NotSame(left, result);
         Assert.NotSame(right, result);
-        Assert.Equal(new double[] { 3,4 }, left.Cast<double>());
-        Assert.Equal(new double[] { 1,2 }, right.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, left);
+        Assert.Equal(new double[] { 1,2 }, right);
         result[0] = 100;
         Assert.Equal(3.0, left[0]);
         Assert.Equal(1.0, right[0]);
@@ -359,8 +353,8 @@ public class MathVectorTests
         MathVector left = new MathVector(new double[] { 3,4 });
         MathVector right = new MathVector(new double[] { x,y });
         Assert.Throws<DivideByZeroException>(() => left.Divide(right));
-        Assert.Equal(new double[] { 3,4 }, left.Cast<double>());
-        Assert.Equal(new double[] { x,y }, right.Cast<double>());
+        Assert.Equal(new double[] { 3,4 }, left);
+        Assert.Equal(new double[] { x,y }, right);
     }
 
     [Fact]
@@ -369,7 +363,7 @@ public class MathVectorTests
         MathVector left = new MathVector(new double[] { 0,0 });
         MathVector right = new MathVector(new double[] { 1,2 });
         IMathVector result = left.Divide(right);
-        Assert.Equal(new double[] { 0,0 }, result.Cast<double>());
+        Assert.Equal(new double[] { 0,0 }, result);
     }
 
     [Theory]
@@ -390,9 +384,9 @@ public class MathVectorTests
             case "/": result = left / right; break;
             default: throw new ArgumentException("Неизвестный оператор");
         }
-        Assert.Equal(new double[] { x,y }, result.Cast<double>());
-        Assert.Equal(new double[] { 3,4 }, left.Cast<double>());
-        Assert.Equal(new double[] { 1,2 }, right.Cast<double>());
+        Assert.Equal(new double[] { x,y }, result);
+        Assert.Equal(new double[] { 3,4 }, left);
+        Assert.Equal(new double[] { 1,2 }, right);
     }
 
     [Theory]
@@ -412,8 +406,8 @@ public class MathVectorTests
             case "/": result = left / 2; break;
             default: throw new ArgumentException("Неизвестный оператор");
         }
-        Assert.Equal(new double[] { x,y }, result.Cast<double>());
-        Assert.Equal(new double[] { 3,4 }, left.Cast<double>());
+        Assert.Equal(new double[] { x,y }, result);
+        Assert.Equal(new double[] { 3,4 }, left);
     }
 
     [Fact]

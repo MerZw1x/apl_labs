@@ -1,7 +1,7 @@
-using System.Collections;
+using System.Collections.Generic;
 
 namespace LinearAlgebra;
-public interface IMathVector : IEnumerable
+public interface IMathVector : IEnumerable<double>
 {
     /// <summary>
     /// Получить размерность вектора (количество координат).
